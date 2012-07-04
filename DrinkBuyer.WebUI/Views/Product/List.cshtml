@@ -1,14 +1,14 @@
-﻿@model IEnumerable<DrinkBuyer.Domain.Entities.Product>
+﻿@model DrinkBuyer.WebUI.Models.ProductsListViewModel
 
 @{
     ViewBag.Title = "Products";
 }
 
-@foreach (var item in Model)
+@foreach (var item in Model.Products)
 {
-    <div class="item">
-        <h3>@item.Name</h3>
-        @item.Description
-        <h4>@item.Price.ToString("c")</h4>
-    </div>
+    Html.RenderPartial("ProductSummary", item);
 }
+
+<div class="pager">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new {page = x}))
+</div>

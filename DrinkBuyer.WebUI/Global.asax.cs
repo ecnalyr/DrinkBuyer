@@ -23,6 +23,8 @@ namespace DrinkBuyer.WebUI
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute(null, "Page{page}", new { Controller = "Product", action = "List" });
+
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
