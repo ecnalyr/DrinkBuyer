@@ -36,7 +36,7 @@
         ///  A test to ensure we can filter products by category
         ///</summary>
         [TestMethod]
-        public void Can_Filter_Products()
+        public void CanFilterProducts()
         {
             // Arrange
             // - create the mock repository
@@ -68,7 +68,7 @@
         ///  A test to see if we can Paginate - that is, create pages
         ///</summary>
         [TestMethod]
-        public void Can_Paginate_Products()
+        public void CanPaginateProducts()
         {
             // Arrange
             // - create the mock repository
@@ -99,7 +99,7 @@
         ///  A test for List to see if we can send pagination to the view model
         ///</summary>
         [TestMethod]
-        public void Can_Send_Pagination_View_Model()
+        public void CanSendPaginationViewModel()
         {
             // Arrange
             // - create the mock repository
@@ -133,7 +133,7 @@
         ///  then tries the List method with no category.
         ///</summary>
         [TestMethod]
-        public void Generate_Category_Specific_Product_Count()
+        public void GenerateCategorySpecificProductCount()
         {
             // Arrange
             // - create the mock repository

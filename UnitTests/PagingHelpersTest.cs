@@ -74,7 +74,7 @@ namespace UnitTests
         // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
         // whether you are testing a page, web service, or a WCF service.
         [TestMethod]
-        public void Can_Generate_Page_Links()
+        public void CanGeneratePageLinks()
         {
             // Arrange - define an HTML helper - we need to do this
             // in order to apply the extension method

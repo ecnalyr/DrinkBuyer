@@ -36,7 +36,7 @@
         ///  A test to see if we can create category links in the proper alphabetical order with no duplicates
         ///</summary>
         [TestMethod]
-        public void Can_Create_Categories()
+        public void CanCreateCategories()
         {
             // Arrange
             // - create the mock repository
@@ -67,7 +67,7 @@
         ///  A test to see if the ViewBag.SelectedCategory contains an appropriate Category
         ///</summary>
         [TestMethod]
-        public void Indicates_Selected_Category()
+        public void IndicatesSelectedCategory()
         {
             // Arrange
             // - create the mock repository

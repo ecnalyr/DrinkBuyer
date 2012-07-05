@@ -31,7 +31,7 @@
         ///  Tests ability to calculate the total cost of the items in the cart.
         ///</summary>
         [TestMethod]
-        public void Calculate_Cart_Total()
+        public void CalculateCartTotal()
         {
             // Arrange - create some test products
             var p1 = new Product { ProductID = 1, Name = "P1", Price = 100M };
@@ -54,7 +54,7 @@
         ///  If this is the first time that a given Product has been added to the cart, we want a new CartLine to be added
         ///</summary>
         [TestMethod]
-        public void Can_Add_New_Lines()
+        public void CanAddNewLines()
         {
             // Arrange - create some test products
             var p1 = new Product { ProductID = 1, Name = "P1" };
@@ -78,7 +78,7 @@
         ///  If the customer has already added a Product to the cart, we want to increment the quantity of the corresponding CartLine and not create a new CartLine.
         ///</summary>
         [TestMethod]
-        public void Can_Add_Quantity_For_Existing_Lines()
+        public void CanAddQuantityForExistingLines()
         {
             // Arrange - create some test products
             var p1 = new Product { ProductID = 1, Name = "P1" };
@@ -103,7 +103,7 @@
         ///  Tests the contents of the cart are properly removed when we reset the entire cart.
         ///</summary>
         [TestMethod]
-        public void Can_Clear_Contents()
+        public void CanClearContents()
         {
             // Arrange - create some test products
             var p1 = new Product { ProductID = 1, Name = "P1", Price = 100M };
@@ -127,7 +127,7 @@
         ///  Tests if a customer can remove products from the cart.
         ///</summary>
         [TestMethod]
-        public void Can_Remove_Line()
+        public void CanRemoveLine()
         {
             // Arrange - create some test products
             var p1 = new Product { ProductID = 1, Name = "P1" };

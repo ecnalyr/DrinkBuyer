@@ -15,15 +15,18 @@
     {
         #region Fields
 
+        private readonly IOrderProcessor orderProcessor;
+
         private readonly IProductRepository repository;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public CartController(IProductRepository repo)
+        public CartController(IProductRepository repo, IOrderProcessor processor)
         {
             this.repository = repo;
+            this.orderProcessor = processor;
         }
 
         #endregion
@@ -40,6 +43,31 @@
             }
 
             return this.RedirectToAction("Index", new { returnUrl });
+        }
+
+        public ViewResult Checkout()
+        {
+            return this.View(new ShippingDetails());
+        }
+
+        [HttpPost]
+        public ViewResult Checkout(Cart cart, ShippingDetails shippingDetails)
+        {
+            if (cart.Lines.Count() == 0)
+            {
+                this.ModelState.AddModelError(string.Empty, "Sorry, your cart is empty!");
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                this.orderProcessor.ProcessOrder(cart, shippingDetails);
+                cart.Clear();
+                return this.View("Completed");
+            }
+            else
+            {
+                return this.View(shippingDetails);
+            }
         }
 
         public ViewResult Index(Cart cart, string returnUrl)

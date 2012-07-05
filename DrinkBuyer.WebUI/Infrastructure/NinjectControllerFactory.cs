@@ -5,13 +5,9 @@ using Ninject;
 
 namespace DrinkBuyer.WebUI.Infrastructure
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Configuration;
 
     using DrinkBuyer.Domain.Abstract;
-    using DrinkBuyer.Domain.Entities;
-
-    using Moq;
     using DrinkBuyer.Domain.Concrete;
 
     public class NinjectControllerFactory : DefaultControllerFactory
@@ -33,6 +29,12 @@ namespace DrinkBuyer.WebUI.Infrastructure
         {
             // put additional bindings here
             ninjectKernel.Bind<IProductRepository>().To<EFProductRepository>();
+
+            EmailSettings emailSettings = new EmailSettings()
+                { WriteAsFile = bool.Parse(ConfigurationManager.AppSettings["Email.WriteAsFile"] ?? "false") };
+
+            ninjectKernel.Bind<IOrderProcessor>().To<EmailOrderProcessor>().WithConstructorArgument(
+                "settings", emailSettings);
         }
     }
 }

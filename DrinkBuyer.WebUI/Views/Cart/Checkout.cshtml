@@ -1,0 +1,32 @@
+﻿@model DrinkBuyer.Domain.Entities.ShippingDetails
+
+@{
+    this.ViewBag.Title = "Checkout";
+
+}
+
+<h2>Check out now</h2>
+Please enter your details and we'll ship your goods right away.
+@using (this.Html.BeginForm())
+{
+    @Html.ValidationSummary()
+
+    <h3>Ship To</h3>
+    <div>Name: @this.Html.EditorFor(x => x.Name)</div>
+    <h3>Address</h3>
+    <div>Line 1: @this.Html.EditorFor(x => x.Line1)</div>
+    <div>Line 2: @this.Html.EditorFor(x => x.Line2)</div>
+    <div>Line 3: @this.Html.EditorFor(x => x.Line3)</div>
+    <div>City: @this.Html.EditorFor(x => x.City)</div>
+    <div>State: @this.Html.EditorFor(x => x.State)</div>
+    <div>Zip: @this.Html.EditorFor(x => x.Zip)</div>
+    <div>Country: @this.Html.EditorFor(x => x.Country)</div>
+    <h3>Options</h3>
+    <label>
+        @this.Html.EditorFor(x => x.GiftWrap)
+        Gift wrap these items
+    </label>
+    <p align="center">
+        <input class="actionButtons" type="submit" value="Complete order" />
+    </p>
+}
