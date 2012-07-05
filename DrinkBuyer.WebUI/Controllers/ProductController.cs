@@ -51,7 +51,10 @@ namespace DrinkBuyer.WebUI.Controllers
                             {
                                 CurrentPage = page, 
                                 ItemsPerPage = this.PageSize, 
-                                TotalItems = this.repository.Products.Count()
+                                TotalItems =
+                                    category == null
+                                        ? this.repository.Products.Count()
+                                        : this.repository.Products.Count(e => e.Category == category)
                             }, 
                     Currentcategory = category
                 };

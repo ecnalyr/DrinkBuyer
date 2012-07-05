@@ -1,0 +1,15 @@
+﻿@model DrinkBuyer.Domain.Entities.Cart
+
+@{
+    this.Layout = null;
+
+}
+
+<div id="cart">
+    <span class="caption">
+        <b>Your cart:</b>
+        @this.Model.Lines.Sum(x => x.Quantity) item(s),
+        @this.Model.ComputeTotalValue().ToString("c")
+    </span>
+    @this.Html.ActionLink("Checkout", "Index", "Cart", new { returnUrl = this.Request.Url.PathAndQuery }, null)
+</div>

@@ -10,10 +10,11 @@
 
     <body>
         <div id="header">
+            @{Html.RenderAction("Summary", "Cart");}
             <div class="title">Drink Buyer</div>
         </div>
         <div id="categories">
-            Will come in the future
+            @{ Html.RenderAction("Menu", "Nav"); }
         </div>
         <div id="content">
             @RenderBody()            

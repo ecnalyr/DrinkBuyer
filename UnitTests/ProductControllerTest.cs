@@ -1,173 +1,58 @@
-﻿using DrinkBuyer.WebUI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using DrinkBuyer.Domain.Abstract;
-using System.Web.Mvc;
-
-namespace UnitTests
+﻿namespace UnitTests
 {
-    using System.Collections.Generic;
+    #region
+
     using System.Linq;
 
+    using DrinkBuyer.Domain.Abstract;
     using DrinkBuyer.Domain.Entities;
+    using DrinkBuyer.WebUI.Controllers;
     using DrinkBuyer.WebUI.Models;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Moq;
 
-    /// <summary>
-    ///This is a test class for ProductControllerTest and is intended
-    ///to contain all ProductControllerTest Unit Tests
+    #endregion
+
+    ///<summary>
+    ///  This is a test class for ProductControllerTest and is intended to contain all ProductControllerTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     public class ProductControllerTest
     {
+        #region Public Properties
 
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
+        ///<summary>
+        ///  Gets or sets the test context which provides information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
         #endregion
 
+        #region Public Methods and Operators
 
-        /// <summary>
-        ///A test to see if we can Paginate
+        ///<summary>
+        ///  A test to ensure we can filter products by category
         ///</summary>
-        // TODO: This test works, update summary,
-        // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
-        // whether you are testing a page, web service, or a WCF service.
-        [TestMethod]
-        public void Can_Paginate_Products()
-        {
-            // Arrange
-            // - create the mock repository
-            Mock<IProductRepository> mock = new Mock<IProductRepository>();
-            mock.Setup(m => m.Products).Returns(new Product[]
-                {
-                    new Product {ProductID = 1, Name = "P1"},
-                    new Product {ProductID = 2, Name = "P2"},
-                    new Product {ProductID = 3, Name = "P3"},
-                    new Product {ProductID = 4, Name = "P4"},
-                    new Product {ProductID = 5, Name = "P5"}
-                }.AsQueryable());
-
-            // create a controller and make the page size 3 items
-            ProductController controller = new ProductController(mock.Object);
-            controller.PageSize = 3;
-
-            // Action
-            ProductsListViewModel result = (ProductsListViewModel)controller.List(null, 2).Model;
-
-            // Assert
-            Product[] prodArray = result.Products.ToArray();
-            Assert.IsTrue(prodArray.Length == 2);
-            Assert.AreEqual(prodArray[0].Name, "P4");
-            Assert.AreEqual(prodArray[1].Name, "P5");
-        }
-
-        /// <summary>
-        ///A test for List to see if we can send pagination to the view model
-        ///</summary>
-        // TODO: This test works, update summary,
-        // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
-        // whether you are testing a page, web service, or a WCF service.
-        [TestMethod]
-        public void Can_Send_Pagination_View_Model()
-        {
-            // Arrange
-            // - create the mock repository
-            Mock<IProductRepository> mock = new Mock<IProductRepository>();
-            mock.Setup(m => m.Products).Returns(new Product[]
-                {
-                    new Product {ProductID = 1, Name = "P1"},
-                    new Product {ProductID = 2, Name = "P2"},
-                    new Product {ProductID = 3, Name = "P3"},
-                    new Product {ProductID = 4, Name = "P4"},
-                    new Product {ProductID = 5, Name = "P5"}
-                }.AsQueryable());
-
-            // Arrange - create a controller and make the page size 3 items
-            ProductController controller = new ProductController(mock.Object);
-            controller.PageSize = 3;
-
-            // Action
-            ProductsListViewModel result = (ProductsListViewModel)controller.List(null, 2).Model;
-
-            // Assert
-            PagingInfo pageInfo = result.PagingInfo;
-            Assert.AreEqual(pageInfo.CurrentPage, 2);
-            Assert.AreEqual(pageInfo.ItemsPerPage, 3);
-            Assert.AreEqual(pageInfo.TotalItems, 5);
-            Assert.AreEqual(pageInfo.TotalPages, 2);
-        }
-
-        /// <summary>
-        ///A test for category filtering 
-        ///</summary>
-        // TODO: This test works, update summary,
-        // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
-        // whether you are testing a page, web service, or a WCF service.
         [TestMethod]
         public void Can_Filter_Products()
         {
             // Arrange
             // - create the mock repository
-            Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            var mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(
-                new Product[]
+                new[]
                     {
-                        new Product { ProductID = 1, Name = "P1", Category = "Cat1" },
-                        new Product { ProductID = 2, Name = "P2", Category = "Cat2" },
-                        new Product { ProductID = 3, Name = "P3", Category = "Cat1" },
-                        new Product { ProductID = 4, Name = "P4", Category = "Cat2" },
+                        new Product { ProductID = 1, Name = "P1", Category = "Cat1" }, 
+                        new Product { ProductID = 2, Name = "P2", Category = "Cat2" }, 
+                        new Product { ProductID = 3, Name = "P3", Category = "Cat1" }, 
+                        new Product { ProductID = 4, Name = "P4", Category = "Cat2" }, 
                         new Product { ProductID = 5, Name = "P5", Category = "Cat3" }
                     }.AsQueryable());
 
             // Arrange - create a controller and make the page size 3 items
-            ProductController controller = new ProductController(mock.Object);
+            var controller = new ProductController(mock.Object);
             controller.PageSize = 3;
 
             // Action
@@ -178,5 +63,108 @@ namespace UnitTests
             Assert.IsTrue(result[0].Name == "P2" && result[0].Category == "Cat2");
             Assert.IsTrue(result[1].Name == "P4" && result[1].Category == "Cat2");
         }
+
+        ///<summary>
+        ///  A test to see if we can Paginate - that is, create pages
+        ///</summary>
+        [TestMethod]
+        public void Can_Paginate_Products()
+        {
+            // Arrange
+            // - create the mock repository
+            var mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(
+                new[]
+                    {
+                        new Product { ProductID = 1, Name = "P1" }, new Product { ProductID = 2, Name = "P2" }, 
+                        new Product { ProductID = 3, Name = "P3" }, new Product { ProductID = 4, Name = "P4" }, 
+                        new Product { ProductID = 5, Name = "P5" }
+                    }.AsQueryable());
+
+            // create a controller and make the page size 3 items
+            var controller = new ProductController(mock.Object);
+            controller.PageSize = 3;
+
+            // Action
+            var result = (ProductsListViewModel)controller.List(null, 2).Model;
+
+            // Assert
+            Product[] prodArray = result.Products.ToArray();
+            Assert.IsTrue(prodArray.Length == 2);
+            Assert.AreEqual(prodArray[0].Name, "P4");
+            Assert.AreEqual(prodArray[1].Name, "P5");
+        }
+
+        ///<summary>
+        ///  A test for List to see if we can send pagination to the view model
+        ///</summary>
+        [TestMethod]
+        public void Can_Send_Pagination_View_Model()
+        {
+            // Arrange
+            // - create the mock repository
+            var mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(
+                new[]
+                    {
+                        new Product { ProductID = 1, Name = "P1" }, new Product { ProductID = 2, Name = "P2" }, 
+                        new Product { ProductID = 3, Name = "P3" }, new Product { ProductID = 4, Name = "P4" }, 
+                        new Product { ProductID = 5, Name = "P5" }
+                    }.AsQueryable());
+
+            // Arrange - create a controller and make the page size 3 items
+            var controller = new ProductController(mock.Object);
+            controller.PageSize = 3;
+
+            // Action
+            var result = (ProductsListViewModel)controller.List(null, 2).Model;
+
+            // Assert
+            PagingInfo pageInfo = result.PagingInfo;
+            Assert.AreEqual(pageInfo.CurrentPage, 2);
+            Assert.AreEqual(pageInfo.ItemsPerPage, 3);
+            Assert.AreEqual(pageInfo.TotalItems, 5);
+            Assert.AreEqual(pageInfo.TotalPages, 2);
+        }
+
+        ///<summary>
+        ///  A test to see if we can generate a category-specific product count.
+        ///  Calls the List action method requesting each category in turn,
+        ///  then tries the List method with no category.
+        ///</summary>
+        [TestMethod]
+        public void Generate_Category_Specific_Product_Count()
+        {
+            // Arrange
+            // - create the mock repository
+            var mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(
+                new[]
+                    {
+                        new Product { ProductID = 1, Name = "P1", Category = "Cat1" }, 
+                        new Product { ProductID = 2, Name = "P2", Category = "Cat2" }, 
+                        new Product { ProductID = 3, Name = "P3", Category = "Cat1" }, 
+                        new Product { ProductID = 4, Name = "P4", Category = "Cat2" }, 
+                        new Product { ProductID = 5, Name = "P5", Category = "Cat3" }
+                    }.AsQueryable());
+
+            // Arrange - create a controller and make the page size 3 items
+            var target = new ProductController(mock.Object);
+            target.PageSize = 3;
+
+            // Action - test the product counts for different categories
+            int category1ProductCount = ((ProductsListViewModel)target.List("Cat1").Model).PagingInfo.TotalItems;
+            int category2ProductCount = ((ProductsListViewModel)target.List("Cat2").Model).PagingInfo.TotalItems;
+            int category3ProductCount = ((ProductsListViewModel)target.List("Cat3").Model).PagingInfo.TotalItems;
+            int allCategoriesProductCount = ((ProductsListViewModel)target.List(null).Model).PagingInfo.TotalItems;
+
+            // Assert
+            Assert.AreEqual(category1ProductCount, 2);
+            Assert.AreEqual(category2ProductCount, 2);
+            Assert.AreEqual(category3ProductCount, 1);
+            Assert.AreEqual(allCategoriesProductCount, 5);
+        }
+
+        #endregion
     }
 }

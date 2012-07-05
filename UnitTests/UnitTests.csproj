@@ -71,7 +71,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CartControllerTest.cs" />
+    <Compile Include="CartTest.cs" />
     <Compile Include="MvcApplicationTest.cs" />
+    <Compile Include="NavControllerTest.cs" />
     <Compile Include="PagingHelpersTest.cs" />
     <Compile Include="ProductControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
