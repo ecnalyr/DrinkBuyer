@@ -1,0 +1,33 @@
+﻿@using DrinkBuyer.Domain.Entities
+@model IEnumerable<Product>
+
+@{
+    this.ViewBag.Title = "Admin: All Products";
+    this.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<h1>All Products</h1>
+<table class="Grid">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th class="NumericCol">Price</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (Product item in this.Model)
+    {
+        <tr>
+            <td>@item.ProductID</td>
+            <td>@this.Html.ActionLink(item.Name, "Edit", new { item.ProductID })</td>
+            <td class="NumericCol">@item.Price.ToString("c")</td>
+            <td>
+                @using (this.Html.BeginForm("Delete", "Admin"))
+                {
+                    @this.Html.Hidden("ProductID", item.ProductID)
+                    <input type="submit" value="Delete"/>
+                }
+            </td>
+        </tr>
+    }
+</table>
+<p>@this.Html.ActionLink("Add a new product", "Create")</p>
