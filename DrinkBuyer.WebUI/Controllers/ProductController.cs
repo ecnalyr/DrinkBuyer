@@ -15,6 +15,7 @@ namespace DrinkBuyer.WebUI.Controllers
 
     using DrinkBuyer.Domain.Abstract;
     using DrinkBuyer.WebUI.Models;
+    using DrinkBuyer.Domain.Entities;
 
     #endregion
 
@@ -59,6 +60,19 @@ namespace DrinkBuyer.WebUI.Controllers
                     Currentcategory = category
                 };
             return View(viewModel);
+        }
+
+        public FileContentResult GetImage(int productId)
+        {
+            Product product = repository.Products.FirstOrDefault(p => p.ProductID == productId);
+            if (product != null)
+            {
+                return File(product.ImageData, product.ImageMimeType);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #endregion

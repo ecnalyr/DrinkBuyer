@@ -3,6 +3,7 @@
     #region
 
     using System.Linq;
+    using System.Web.Mvc;
 
     using DrinkBuyer.Domain.Abstract;
     using DrinkBuyer.Domain.Entities;
@@ -128,9 +129,59 @@
         }
 
         ///<summary>
-        ///  A test to see if we can generate a category-specific product count.
-        ///  Calls the List action method requesting each category in turn,
-        ///  then tries the List method with no category.
+        ///  A test to see if the GetImage method returns the correct MIME type from the repository.
+        ///</summary>
+        [TestMethod]
+        public void CanRetrieveImageData()
+        {
+            // Arrange - create a Product with image data
+            var prod = new Product
+                {
+                   ProductID = 2, Name = "Test", ImageData = new byte[] { }, ImageMimeType = "image/png" 
+                };
+
+            // Arrange - create the mock repository
+            var mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(
+                new[] { new Product { ProductID = 1, Name = "P1" }, prod, new Product { ProductID = 3, Name = "P3" } }.
+                    AsQueryable());
+
+            // Arrange - create the controller
+            var target = new ProductController(mock.Object);
+
+            // Act - call the GetImage action method
+            ActionResult result = target.GetImage(2);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(FileResult));
+            Assert.AreEqual(prod.ImageMimeType, ((FileResult)result).ContentType);
+        }
+
+        ///<summary>
+        ///  A test to make sure that no data is returned when we request a Product ID that doesn't exist.
+        ///</summary>
+        [TestMethod]
+        public void CannotRetrieveImageDataForInvalidID()
+        {
+            // Arrange - create the mock repository
+            var mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(
+                new[] { new Product { ProductID = 1, Name = "P1" }, new Product { ProductID = 2, Name = "P2" } }.
+                    AsQueryable());
+
+            // Arrange - create the controller
+            var target = new ProductController(mock.Object);
+
+            // Act - call the GetImage action method
+            ActionResult result = target.GetImage(100);
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        ///<summary>
+        ///  A test to see if we can generate a category-specific product count. Calls the List action method requesting each category in turn, then tries the List method with no category.
         ///</summary>
         [TestMethod]
         public void GenerateCategorySpecificProductCount()

@@ -10,7 +10,7 @@ namespace DrinkBuyer.Domain.Entities
     using System.Web.Mvc;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// An entity that can have a description, price, category, and image.
     /// </summary>
     public class Product
     {
@@ -25,14 +25,17 @@ namespace DrinkBuyer.Domain.Entities
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Enter a link to the image - if you have no link, please enter 'none'")]
-        public string Image { get; set; }
-
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Please enter a positive price")]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Please specify a category")]
         public string Category { get; set; }
+
+        public byte[] ImageData { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public string ImageMimeType { get; set; }
+
     }
 }
