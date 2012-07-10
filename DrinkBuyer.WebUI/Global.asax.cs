@@ -1,15 +1,13 @@
 ﻿namespace DrinkBuyer.WebUI
 {
-    using DrinkBuyer.Domain.Entities;
-    using DrinkBuyer.WebUI.Binders;
-    using DrinkBuyer.WebUI.Infrastructure;
-
     using System.Web.Mvc;
     using System.Web.Routing;
 
+    using DrinkBuyer.Domain.Entities;
+    using DrinkBuyer.WebUI.Binders;
+
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
-
     public class MvcApplication : System.Web.HttpApplication
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -60,7 +58,6 @@
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
             ModelBinders.Binders.Add(typeof(Cart), new CartModelBinder());
         }
     }
