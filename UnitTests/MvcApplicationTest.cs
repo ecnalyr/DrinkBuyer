@@ -42,9 +42,10 @@
             // check for the URL that we hope to receive
             this.TestRouteMatch("~/", "Product", "List");
             this.TestRouteMatch("~/Anything/Else", "Anything", "Else");
+            this.TestRouteMatch("~/Product/SubCategory/category/subcategory", "Product", "SubCategory", new { category = "category", subCategory = "subcategory" });
 
             // Need more tests here for all routes
-            this.TestRouteFail("~/Product/List/All");
+            //this.TestRouteFail("~/Product/List/All");
         }
 
         #endregion

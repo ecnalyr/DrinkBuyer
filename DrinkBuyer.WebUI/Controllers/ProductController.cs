@@ -40,6 +40,8 @@ namespace DrinkBuyer.WebUI.Controllers
 
         #region Public Methods and Operators
 
+        // Get: /
+        // Get: /Page1 not /Pagexyz
         public ViewResult List(string category, int page = 1)
         {
             var viewModel = new ProductsListViewModel
@@ -62,6 +64,8 @@ namespace DrinkBuyer.WebUI.Controllers
             return View(viewModel);
         }
 
+        //
+        // Get: /Products/{category}/{subcategory}
         public ViewResult SubCategory(string category, string subCategory)
         {
             var viewModel = new SubCategoryViewModel
