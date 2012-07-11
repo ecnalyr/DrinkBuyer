@@ -1,0 +1,14 @@
+﻿@model DrinkBuyer.WebUI.Models.SubCategoryViewModel
+
+@{
+    ViewBag.Title = "SubCategory";
+}
+
+@Html.Raw(Model.CurrentCategory)
+
+@Html.Raw(Model.CurrentSubCategory)
+
+@foreach (var item in Model.Products)
+{
+    Html.RenderPartial("ProductSummary", item);
+}

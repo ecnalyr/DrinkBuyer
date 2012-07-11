@@ -2,6 +2,7 @@
 {
     #region
 
+    using System.Diagnostics;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -214,6 +215,39 @@
             Assert.AreEqual(category2ProductCount, 2);
             Assert.AreEqual(category3ProductCount, 1);
             Assert.AreEqual(allCategoriesProductCount, 5);
+        }
+
+        ///<summary>
+        ///  A test to see if we can generate a sub-category-specific product count. Calls the List action method requesting various sub-categories from various categories
+        ///</summary>
+        [TestMethod]
+        public void GenerateSubCategorySpecificProductCount()
+        {
+            // Arrange
+            // - create the mock repository
+            var mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(
+                new[]
+                    {
+                        new Product { ProductID = 1, Name = "P1", Category = "Cat1", SubCategory = "Liquid" },
+                        new Product { ProductID = 2, Name = "P2", Category = "Cat2", SubCategory = "Liquid" },
+                        new Product { ProductID = 3, Name = "P3", Category = "Cat1", SubCategory = "Solid" },
+                        new Product { ProductID = 4, Name = "P4", Category = "Cat2", SubCategory = "Liquid" }, 
+                        new Product { ProductID = 5, Name = "P5", Category = "Cat2", SubCategory = "Solid" }
+                    }.AsQueryable());
+
+            // Arrange - create a controller and make the page size 3 items
+            var target = new ProductController(mock.Object);
+
+            // Action - test the product counts for different categories
+            int subcatLiquidCat1ProductCount = ((SubCategoryViewModel)target.SubCategory("Cat1", "Liquid").Model).Products.Count();
+            int subCatLiquidCat2ProductCount = ((SubCategoryViewModel)target.SubCategory("Cat2", "Liquid").Model).Products.Count();
+            int subCatSolidCat2ProductCount = ((SubCategoryViewModel)target.SubCategory("Cat2", "Solid").Model).Products.Count();
+
+            // Assert
+            Assert.AreEqual(subcatLiquidCat1ProductCount, 1);
+            Assert.AreEqual(subCatLiquidCat2ProductCount, 2);
+            Assert.AreEqual(subCatSolidCat2ProductCount, 1);
         }
 
         #endregion

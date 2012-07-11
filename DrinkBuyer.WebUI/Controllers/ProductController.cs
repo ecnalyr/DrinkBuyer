@@ -62,6 +62,17 @@ namespace DrinkBuyer.WebUI.Controllers
             return View(viewModel);
         }
 
+        public ViewResult SubCategory(string category, string subCategory)
+        {
+            var viewModel = new SubCategoryViewModel
+                {
+                    Products = this.repository.Products.Where(p => p.Category == category && p.SubCategory == subCategory),
+                    CurrentCategory = category,
+                    CurrentSubCategory = subCategory
+                };
+            return View(viewModel);
+        }
+
         public FileContentResult GetImage(int productId)
         {
             Product product = repository.Products.FirstOrDefault(p => p.ProductID == productId);

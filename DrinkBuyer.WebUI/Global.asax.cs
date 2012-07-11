@@ -1,8 +1,10 @@
 ﻿namespace DrinkBuyer.WebUI
 {
+    using System.Data.Entity;
     using System.Web.Mvc;
     using System.Web.Routing;
 
+    using DrinkBuyer.Domain.Concrete;
     using DrinkBuyer.Domain.Entities;
     using DrinkBuyer.WebUI.Binders;
 
@@ -53,6 +55,7 @@
 
         protected void Application_Start()
         {
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<EFDbContext>());
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
